@@ -3,10 +3,9 @@ import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 import CampsiteInfo from './CampsiteInfoComponent';
 
 class Directory extends Component {
-    state={
+    state = {
         selectedCampsite : null
     }
-    
     onCampsiteSelect(campsite) {
         this.setState({ selectedCampsite: campsite });
     }
@@ -53,5 +52,4 @@ class Directory extends Component {
         );
     }
 }
-
 export default Directory;

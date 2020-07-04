@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-
 class CampsiteInfo extends Component {
     renderComments(comments){
         if(comments){
             return(
                 <div className="col-md-5 m-1">
                     <h4>Comments</h4>
+                    {/* map returns <> into the DOM? so there is no need to assign map to anything  */}
                     {comments.map(comment => {
                         return (
                         <> {/* react basic container? */}
@@ -20,7 +20,6 @@ class CampsiteInfo extends Component {
             )
         } else return <div></div>
     }
-
     renderCampsite(campsite) {
         return (
             <div className="col-md-5 m-1">             
@@ -35,7 +34,7 @@ class CampsiteInfo extends Component {
     }
     render() {
         if (this.props.campsite) {
-            const campsite = this.props.campsite; // how can I do both in one line?
+            const campsite = this.props.campsite; // research how can I do both in one line? 
             const {comments} = campsite; //destruct campsite props to make it easier to access comments
             return (
                 <div className="row">
