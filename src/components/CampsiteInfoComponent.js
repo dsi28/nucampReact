@@ -18,7 +18,7 @@ class CampsiteInfo extends Component {
                     })}
                 </div>
             )
-        } else return <div></div>
+        } else return <div>blank</div>
     }
     renderCampsite(campsite) {
         return (
@@ -30,16 +30,19 @@ class CampsiteInfo extends Component {
                         <CardText>{campsite.description}</CardText>
                     </CardBody>
                 </Card>
-            </div>)
+            </div>
+        )
     }
     render() {
         if (this.props.campsite) {
             const campsite = this.props.campsite; // research how can I do both in one line? 
             const {comments} = campsite; //destruct campsite props to make it easier to access comments
             return (
-                <div className="row">
-                    {this.renderCampsite(campsite)}
-                    {this.renderComments(comments)}
+                <div className="container">
+                    <div className="row">
+                        {this.renderCampsite(campsite)}
+                        {this.renderComments(comments)}
+                    </div>
                 </div>
             )
         } return <div></div>
