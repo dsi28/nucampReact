@@ -35,8 +35,7 @@ function RenderCampsite({campsite}) {
 }
 function CampsiteInfo(props) {
     if (props.campsite) {
-        const campsite = props.campsite; // research how can I do both in one line? 
-        const { comments } = campsite; //destruct campsite props to make it easier to access comments
+        const {campsite, campsite: {comments}} = props;// to get access to props.campsite.commens -> campsite: {comments}
         return (
             <div className="container">
                 <div className="row">
@@ -47,5 +46,4 @@ function CampsiteInfo(props) {
         )
     } return <div></div>
 }
-
 export default CampsiteInfo;
