@@ -17,7 +17,7 @@ function RenderComments({comments}){
                 })}
             </div>
         )
-    } else return <div>blank</div>
+    } else return <div>No Comments</div>
 }
 
 function RenderCampsite({campsite}) {
@@ -35,7 +35,7 @@ function RenderCampsite({campsite}) {
 }
 function CampsiteInfo(props) {
     if (props.campsite) {
-        const {campsite, campsite: {comments}} = props;// to get access to props.campsite.commens -> campsite: {comments}
+        const {campsite, comments} = props;// to get access to props.campsite.commens -> campsite: {comments}
         return (
             <div className="container">
                 <div className="row">
