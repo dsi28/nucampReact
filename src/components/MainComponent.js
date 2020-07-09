@@ -6,15 +6,25 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import { Switch, Route, Redirect } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { CAMPSITES } from '../shared/campsites';
+import { COMMENTS } from '../shared/comments';
+import { PARTNERS } from '../shared/partners';
+import { PROMOTIONS } from '../shared/promotions';
 
 class Main extends Component {
     state = {
-        campsites: CAMPSITES
+        campsites: CAMPSITES,
+        comments: COMMENTS,
+        partners: PARTNERS,
+        promotions: PROMOTIONS
     };
     render() {
         const HomePage = () => {
             return(
-                <Home />
+                <Home 
+                    campsite={this.state.campsites.filter(campsite =>{ return campsite.featured===true})[0]}
+                    partner={this.state.partners.filter(partner =>{ return partner.featured===true})[0]}
+                    promotion={this.state.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
+                />
             )
         }
         return (
