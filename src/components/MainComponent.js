@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Directory from './DirectoryComponent';
-import CampsiteInfo from './CampsiteInfoComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
+import Contact from './ContactComponent';
 import { Switch, Route, Redirect } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { CAMPSITES } from '../shared/campsites';
 
@@ -23,6 +23,7 @@ class Main extends Component {
                 {/* Any routing request will got through the swtich component until it finds a matching path(route). Route acts like a case */}
                 <Switch>
                     <Route path='/home' component={HomePage}/>
+                    <Route path='/contactus' component={Contact} />
                     <Route path='/directory' render={() => <Directory campsites={this.state.campsites}/>}/>
                     <Redirect to='/home'/>
                 </Switch>
