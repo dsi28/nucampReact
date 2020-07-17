@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Contact extends Component {
@@ -10,7 +10,13 @@ class Contact extends Component {
         email: '',
         agree: false,
         contactType: 'By Phone',
-        feedback: ''
+        feedback: '',
+        touched: {
+            firstName: false,
+            lastName: false,
+            phoneNum: false,
+            email: false
+        }
     }
 
     handleInputChange = (e) => {
@@ -27,6 +33,12 @@ class Contact extends Component {
         e.preventDefault();
         console.log(`current state is ${JSON.stringify(this.state)}`);
         alert(`Current state is ${JSON.stringify(this.state)}`);
+    }
+
+    handleBlur = (field) => {
+        this.setState({
+            touched: {...this.state.touched, [field]: true}
+        })
     }
 
     render() {
@@ -75,6 +87,7 @@ class Contact extends Component {
                                     <Input type="text" id="firstName" name="firstName"
                                         placeholder="First Name"
                                         value={this.state.firstName}
+                                        onBlur={() => this.handleBlur('firstName')}
                                         onChange={ (e)=>this.handleInputChange(e)} />
                                 </Col>
                             </FormGroup>
@@ -84,6 +97,7 @@ class Contact extends Component {
                                     <Input type="text" id="lastName" name="lastName"
                                         placeholder="Last Name"
                                         value={this.state.lastName}
+                                        onBlur={() => this.handleBlur('lastName')}
                                         onChange={(e) => this.handleInputChange(e)} />
                                 </Col>
                             </FormGroup>
@@ -93,6 +107,7 @@ class Contact extends Component {
                                     <Input type="tel" id="phoneNum" name="phoneNum"
                                         placeholder="Phone number"
                                         value={this.state.phoneNum}
+                                        onBlur={() => this.handleBlur('phoneNum')}
                                         onChange={(e) => this.handleInputChange(e)} />
                                 </Col>
                             </FormGroup>
@@ -102,6 +117,7 @@ class Contact extends Component {
                                     <Input type="email" id="email" name="email"
                                         placeholder="Email"
                                         value={this.state.email}
+                                        onBlur={() => this.handleBlur('email')}
                                         onChange={(e) => this.handleInputChange(e)} />
                                 </Col>
                             </FormGroup>
