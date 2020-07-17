@@ -6,35 +6,36 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { Switch, Route, Redirect } from 'react-router-dom'; // set up router so users can be sent to the correct location
-import { CAMPSITES } from '../shared/campsites';
-import { COMMENTS } from '../shared/comments';
-import { PARTNERS } from '../shared/partners';
-import { PROMOTIONS } from '../shared/promotions';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
+import { connect } from 'react-redux';
+
+//get state from redux
+const mapStateToProps = state => {
+    return {
+        campsite: state.campsites,
+        comments: state.comments,
+        partners: state.partners,
+        promotions: state.promotions
+    }
+}
 
 class Main extends Component {
-    state = {
-        campsites: CAMPSITES,
-        comments: COMMENTS,
-        partners: PARTNERS,
-        promotions: PROMOTIONS
-    };
 
     render() {
         const HomePage = () => {
             return(
                 <Home 
-                    campsite={this.state.campsites.filter(campsite =>{ return campsite.featured===true})[0]}
-                    partner={this.state.partners.filter(partner =>{ return partner.featured===true})[0]}
-                    promotion={this.state.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
+                    campsite={this.props.campsites.filter(campsite =>{ return campsite.featured===true})[0]}
+                    partner={this.props.partners.filter(partner =>{ return partner.featured===true})[0]}
+                    promotion={this.props.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
                 />
             )
         }
         const CampsiteWithId = ({match})=>{
             return(
                 <CampsiteInfo 
-                    campsite={this.state.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
-                    comments={this.state.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
+                    campsite={this.props.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
+                    comments={this.props.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
                 /> 
             )
         }
@@ -47,15 +48,17 @@ class Main extends Component {
                     <Route path='/home' component={HomePage}/>
                     <Route path='/contactus' component={Contact} />
                     <Route path='/directory/:campsiteId' component={CampsiteWithId}/>
-                    <Route exact path='/directory' render={() => <Directory campsites={this.state.campsites}/>}/>
-                    <Route path='/aboutus' render={()=> <About partners={this.state.partners}/>}/>
+                    <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites}/>}/>
+                    <Route path='/aboutus' render={()=> <About partners={this.props.partners}/>}/>
                     <Redirect to='/home'/>
                 </Switch>
-                {/* <CampsiteInfo campsite={this.state.campsites.filter(campsite => campsite.id === this.state.selectedCampsite)[0]}/>
+                {/* <CampsiteInfo campsite={this.props.campsites.filter(campsite => campsite.id === this.props.selectedCampsite)[0]}/>
                 the [0] at the end of the filter method returns the first object in the array that filter returns. filter does not return an object */}
                 <Footer/>
             </div>
         );
     }
 }
-export default Main;
+//connect: allows main component to get state from redux store
+//withRouter allows router to still work after changes to export
+export default withRouter(connect(mapStateToProps)(Main));
