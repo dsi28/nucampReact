@@ -9,9 +9,9 @@ const store = ConfigureStore();
 
 class App extends Component {
     render() {
+                        // make the Browser router component the highest leve component so it has access to all components.
         return (
             <Provider store={store}>
-                // make the Browser router component the highest leve component so it has access to all components.
                 <BrowserRouter>
                     <div className="App">
                         <MainComponent/>
