@@ -10,12 +10,12 @@ const minLength = len => val => val && (val.length >= len);
 const maxLength = len => val => !val || (val.length <= len);
 
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, campsiteId}){
     if (comments) {
         return (
             <div className="col-md-5 m-1">
                 <h4>Comments</h4>
-                {/* map returns <> into the DOM? so there is no need to assign map to anything  */}
+
                 {comments.map(comment => {
                     return (
                         <> {/* react basic container? */}
@@ -24,7 +24,9 @@ function RenderComments({comments}){
                         </>
                     )
                 })}
-                <CommentForm/>
+                <CommentForm 
+                    campsiteId={campsiteId} 
+                    addComment={addComment}/>
             </div>
         )
     } else return <div>No Comments</div>
@@ -44,21 +46,22 @@ class CommentForm extends Component{
     }
 
     onclickHandler = () => {
-        this.togglerModal();
+        this.toggleModal();
     }
-    togglerModal = () => {
+    toggleModal = () => {
         this.setState({...this.state, showModal: !this.state.showModal});
     }
     handleSubmit = (values) => {
-        alert(`Current State: ${JSON.stringify(values)}`);
-        console.log(`Current State: ${JSON.stringify(values)}`);
+        this.toggleModal();
+        console.log(values.text);
+        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.comment);
     }
     render(){
         return(
             <>
                 <Button onClick={() => this.onclickHandler()} outline><i className="fa fa-pencil"/> Submit Comment</Button>
-                <Modal isOpen={this.state.showModal}  toggle={() => this.togglerModal()}>
-                    <ModalHeader toggle={() => this.togglerModal()}>Submit Comment</ModalHeader>
+                <Modal isOpen={this.state.showModal}  toggle={() => this.toggleModal()}>
+                    <ModalHeader toggle={() => this.toggleModal()}>Submit Comment</ModalHeader>
                     <ModalBody>
                     <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <div className="form-group">
@@ -155,7 +158,10 @@ function CampsiteInfo(props) {
                 </div>
                 <div className="row">
                     <RenderCampsite campsite={campsite}/>
-                    <RenderComments comments={comments}/>
+                    <RenderComments 
+                        comments={comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}/>
                 </div>
             </div>
         )

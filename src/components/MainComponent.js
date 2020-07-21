@@ -8,6 +8,8 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { connect } from 'react-redux';
+import { addComment } from '../redux/ActionCreators';
+
 //get state from redux
 const mapStateToProps = state => {
     return {
@@ -17,6 +19,11 @@ const mapStateToProps = state => {
         promotions: state.promotions
     };
 };
+
+const mapDispatchToProps = {
+    // for this arrow function why are () used instead of brackets? since only addComment function call is being retuned?
+    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text))
+}
 
 class Main extends Component {
 
@@ -36,6 +43,7 @@ class Main extends Component {
                 <CampsiteInfo 
                     campsite={this.props.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
                     comments={this.props.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
+                    addComment={this.props.addComment}
                 /> 
             )
         }
@@ -56,6 +64,7 @@ class Main extends Component {
         );
     }
 }
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
 //connect: allows main component to get state from redux store
+// having mapDispatchToProps allows the actions to be avlible in the mainComponent(in this case) as a prop
 //withRouter allows router to still work after changes to export
