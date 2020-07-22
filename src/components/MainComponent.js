@@ -8,7 +8,7 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { connect } from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchCampsites } from '../redux/ActionCreators';
 
 //get state from redux
 const mapStateToProps = state => {
@@ -22,17 +22,24 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     // for this arrow function why are () used instead of brackets? since only addComment function call is being retuned?
-    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text))
+    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
+    fetchCampsites: () => (fetchCampsites())
 }
 
 class Main extends Component {
 
+    //called as soon as component is mounted onto the dom. before render????
+    componentDidMount(){
+        this.props.fetchCampsites();
+    }
+
     render() {
-        console.log(this.props)
         const HomePage = () => {
             return(
                 <Home 
-                    campsite={this.props.campsites.filter(campsite =>{ return campsite.featured===true})[0]}
+                    campsite={this.props.campsites.campsites.filter(campsite =>{ return campsite.featured===true})[0]}
+                    campsitesLoading={this.props.campsites.isLoading}
+                    campsitesErrMess={this.props.campsites.errMess}
                     partner={this.props.partners.filter(partner =>{ return partner.featured===true})[0]}
                     promotion={this.props.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
                 />
@@ -41,7 +48,9 @@ class Main extends Component {
         const CampsiteWithId = ({match})=>{
             return(
                 <CampsiteInfo 
-                    campsite={this.props.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
+                    campsite={this.props.campsites.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
+                    isLoading={this.props.campsites.isLoading}
+                    errMess={this.props.campsites.errMess}
                     comments={this.props.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
                     addComment={this.props.addComment}
                 /> 

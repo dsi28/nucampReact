@@ -5,6 +5,7 @@ import { Card, CardImg, CardText, CardBody,
     Label, Col, Row } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 const minLength = len => val => val && (val.length >= len);
 const maxLength = len => val => !val || (val.length <= len);
@@ -142,6 +143,24 @@ function RenderCampsite({campsite}) {
     )
 }
 function CampsiteInfo(props) {
+    if(props.isLoading){
+        return(
+            <div className="container">
+                <div className="row">
+                    <Loading/>
+                </div>
+            </div>
+        );
+    }
+    if(props.errMess){
+        return(
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
     if (props.campsite) {
         const {campsite, comments} = props;// to get access to props.campsite.commens -> campsite: {comments}
         return (
