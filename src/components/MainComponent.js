@@ -8,6 +8,7 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { connect } from 'react-redux';
+import { actions } from 'react-redux-form';
 import { addComment, fetchCampsites } from '../redux/ActionCreators';
 
 //get state from redux
@@ -23,7 +24,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     // for this arrow function why are () used instead of brackets? since only addComment function call is being retuned?
     addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
-    fetchCampsites: () => (fetchCampsites())
+    fetchCampsites: () => (fetchCampsites()),
+    resetFeedbackForm: (actions.reset('feedbackForm'))
 }
 
 class Main extends Component {
@@ -62,7 +64,7 @@ class Main extends Component {
                 <Header/>
                 <Switch>
                     <Route path='/home' component={HomePage}/>
-                    <Route path='/contactus' component={Contact} />
+                    <Route path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
                     <Route path='/directory/:campsiteId' component={CampsiteWithId}/>
                     <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites}/>}/>
                     <Route path='/aboutus' render={()=> <About partners={this.props.partners}/>}/>
