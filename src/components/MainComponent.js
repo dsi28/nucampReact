@@ -9,7 +9,7 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
-import { addComment, fetchCampsites } from '../redux/ActionCreators';
+import { addComment, fetchCampsites, fetchComments, fetchPromotions } from '../redux/ActionCreators';
 
 //get state from redux
 const mapStateToProps = state => {
@@ -25,7 +25,9 @@ const mapDispatchToProps = {
     // for this arrow function why are () used instead of brackets? since only addComment function call is being retuned?
     addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
     fetchCampsites: () => (fetchCampsites()),
-    resetFeedbackForm: (actions.reset('feedbackForm'))
+    resetFeedbackForm: (actions.reset('feedbackForm')), 
+    fetchComments: () => (fetchComments()),
+    fetchPromotions: () => (fetchPromotions())
 }
 
 class Main extends Component {
@@ -33,6 +35,8 @@ class Main extends Component {
     //called as soon as component is mounted onto the dom. before render????
     componentDidMount(){
         this.props.fetchCampsites();
+        this.props.fetchComments();
+        this.props.fetchPromotions();
     }
 
     render() {
@@ -43,7 +47,9 @@ class Main extends Component {
                     campsitesLoading={this.props.campsites.isLoading}
                     campsitesErrMess={this.props.campsites.errMess}
                     partner={this.props.partners.filter(partner =>{ return partner.featured===true})[0]}
-                    promotion={this.props.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
+                    promotion={this.props.promotions.promotions.filter(promotion =>{ return promotion.featured===true})[0]}
+                    promotionLoading={this.props.promotions.isLoading}
+                    promotionErrMess={this.props.promotions.errMess}
                 />
             )
         }
@@ -53,7 +59,8 @@ class Main extends Component {
                     campsite={this.props.campsites.campsites.filter(campsite =>{ return campsite.id === +match.params.campsiteId })[0]}
                     isLoading={this.props.campsites.isLoading}
                     errMess={this.props.campsites.errMess}
-                    comments={this.props.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
+                    comments={this.props.comments.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
+                    commentsErrMess={this.props.comments.errMess}
                     addComment={this.props.addComment}
                 /> 
             )
