@@ -12,7 +12,7 @@ const minLength = len => val => val && (val.length >= len);
 const maxLength = len => val => !val || (val.length <= len);
 
 
-function RenderComments({comments, addComment, campsiteId}){
+function RenderComments({comments, postComment, campsiteId}){
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -28,7 +28,7 @@ function RenderComments({comments, addComment, campsiteId}){
                 })}
                 <CommentForm 
                     campsiteId={campsiteId} 
-                    addComment={addComment}/>
+                    postComment={postComment}/>
             </div>
         )
     } else return <div>No Comments</div>
@@ -56,7 +56,7 @@ class CommentForm extends Component{
     handleSubmit = (values) => {
         this.toggleModal();
         console.log(values.text);
-        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.campsiteId, values.rating, values.author, values.comment);
     }
     render(){
         return(
@@ -180,7 +180,7 @@ function CampsiteInfo(props) {
                     <RenderCampsite campsite={campsite}/>
                     <RenderComments 
                         comments={comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         campsiteId={props.campsite.id}/>
                 </div>
             </div>

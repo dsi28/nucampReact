@@ -9,7 +9,7 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'; // set up router so users can be sent to the correct location
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
-import { addComment, fetchCampsites, fetchComments, fetchPromotions } from '../redux/ActionCreators';
+import { postComment, fetchCampsites, fetchComments, fetchPromotions } from '../redux/ActionCreators';
 
 //get state from redux
 const mapStateToProps = state => {
@@ -22,8 +22,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    // for this arrow function why are () used instead of brackets? since only addComment function call is being retuned?
-    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
+    // for this arrow function why are () used instead of brackets? since only postComment function call is being retuned?
+    postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
     fetchCampsites: () => (fetchCampsites()),
     resetFeedbackForm: (actions.reset('feedbackForm')), 
     fetchComments: () => (fetchComments()),
@@ -32,7 +32,7 @@ const mapDispatchToProps = {
 
 class Main extends Component {
 
-    //called as soon as component is mounted onto the dom. before render????
+    //called as soon as component is mounted onto the dom. before render?
     componentDidMount(){
         this.props.fetchCampsites();
         this.props.fetchComments();
@@ -61,7 +61,7 @@ class Main extends Component {
                     errMess={this.props.campsites.errMess}
                     comments={this.props.comments.comments.filter(comments =>{ return comments.campsiteId === +match.params.campsiteId })}
                     commentsErrMess={this.props.comments.errMess}
-                    addComment={this.props.addComment}
+                    postComment={this.props.postComment}
                 /> 
             )
         }
